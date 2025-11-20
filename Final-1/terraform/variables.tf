@@ -1,8 +1,3 @@
-# variable "token" {
-#   type        = string
-#   description = "OAuth-token; https://cloud.yandex.ru/docs/iam/concepts/authorization/oauth-token"
-# }
-
 variable "cloud_id" {
   description = "Yandex Cloud ID"
   type        = string
@@ -18,18 +13,6 @@ variable "default_zone" {
   type        = string
   default     = "ru-central1-a"
 }
-
-# variable "storage_access_key" {
-#   description = "Yandex Cloud Object Storage Access Key"
-#   type        = string
-#   sensitive   = true
-# }
-
-# variable "storage_secret_key" {
-#   description = "Yandex Cloud Object Storage Secret Key"
-#   type        = string
-#   sensitive   = true
-# }
 
 variable ssh_public_key {
   type        = string
