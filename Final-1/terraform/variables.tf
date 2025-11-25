@@ -24,6 +24,55 @@ variable "network_name" {
   default     = "final-vpc"
 }
 
+variable "sg_name" {
+  type        = string
+  default     = "final-app-sg"
+}
+
+variable "security_group_ingress" {
+  description = "Ingress rules for the application security group"
+  type = list(object({
+    description    = string
+    protocol       = string
+    port           = number
+    v4_cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      description    = "SSH"
+      protocol       = "TCP"
+      port           = 22
+      v4_cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description    = "HTTP"
+      protocol       = "TCP"
+      port           = 80
+      v4_cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description    = "HTTPS"
+      protocol       = "TCP"
+      port           = 443
+      v4_cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
+variable "security_group_egress" {
+  description = "Egress rules for the application security group"
+  type = list(object({
+    protocol       = string
+    v4_cidr_blocks = list(string)
+  }))
+  default = [
+    {
+      protocol       = "ANY"
+      v4_cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+}
+
 variable "subnets" {
   description = "Subnets per zone"
   type = map(object({
@@ -42,10 +91,30 @@ variable "vm_count" {
   default     = 2
 }
 
+variable "vm_resources" {
+  description = "Resources for application VMs"
+  type = object({
+    cores         = number
+    memory        = number
+    core_fraction = number
+  })
+  default = {
+    cores         = 2
+    memory        = 4
+    core_fraction = 20
+  }
+}
+
 variable "vm_image_id" {
   description = "ID of the base image"
   type        = string
   default     = "fd84l3kpm41j1pcogc3g"
+}
+
+variable "vm_boot_disk_size" {
+  description = "Boot disk size for application VMs (GB)"
+  type        = number
+  default     = 20
 }
 
 variable "mysql_version" {
